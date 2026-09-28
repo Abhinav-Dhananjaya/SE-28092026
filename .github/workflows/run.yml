@@ -1,21 +1,41 @@
-name: Run Python Script
+  
+name: Python CI - Lint, Test, and Run
 
 on:
   push:
     branches: [ "main" ]
 
 jobs:
-  run-script:
+  ci-pipeline:
     runs-on: ubuntu-latest
 
     steps:
+    # 1. Checkout your repository code
     - name: Checkout code
       uses: actions/checkout@v4
 
+    # 2. Set up Python environment
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.10'
 
+    # 3. Install dependencies (Pylint & Pytest)
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pylint pytest
+
+    # 4. Run Pylint for code quality check
+    - name: Run Pylint
+      run: |
+        pylint x.py
+
+    # 5. Run Pytest for unit testing
+    - name: Run Pytest
+      run: |
+        pytest
+
+    # 6. Run your original script
     - name: Run x.py
       run: python x.py
